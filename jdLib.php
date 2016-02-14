@@ -5,10 +5,9 @@
 	 * 
 	 * @param  string  $url    The URL to hit with the curl call.
 	 * @param  array   $fields The fields to POST to that url.
-	 * @param  boolean $head   Weather to include the header as part of the response.
-	 * @return [type]          The full response on success or false on failure.
+	 * @return array           An array that includes body, info, and header.
 	 */
-	function jdCurl($url, $fields, $head = FALSE) {
+	function jdCurl($url, $fields) {
 		// Initialize curl
 		$ch = curl_init();
 		// Set the curl options
@@ -26,21 +25,13 @@
 		$body = substr($response, $header_size);
 		// Close curl
 		curl_close($ch);
-		// If the header option was set to true
-		if ($head === TRUE) {
-			// Return the header and body
-			return array(
-				'header' => trim($header),
-				'info' => $info,
-				'body' => $body
-			);
-		} else {
-			// Return the body
-			return array(
-				'info' => $info,
-				'body' => $body
-			);
-		}
+		// Return an array with the result details
+		return array(
+			'header' => trim($header),
+			'info' => $info,
+			'body' => $body,
+			'full' => $response
+		);
 	}
 
 ?>
